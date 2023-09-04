@@ -16,3 +16,4 @@ Features:
 - Hidden Reminder: Users can use a special indicator to hide their reminder command (good for surprise reminders/hidden reminders from server members)(Users will receive a dm for confirmation)
 - Timezone Support: Allow users to specify their timezone
 - Reminder Editing: Allow users to modify the date, time, or content of existing reminders. Or if they want, to delete the reminder
+- A command like !help or something like that, provides the user a list of the bot’s commands and what the commands do
