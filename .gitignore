@@ -1,4 +1,5 @@
 /node_modules
+/mock_data
 
 bot_info.txt
 .env
