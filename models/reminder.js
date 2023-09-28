@@ -2,23 +2,20 @@ const Sequelize = require('sequelize');
 const sequelize = require('../db/database');
 
 const Reminder = sequelize.define('reminder', {
-    reminder_id: {
+    user_id: {
         type: Sequelize.INTEGER,
-        primaryKey: true
+        primaryKey: true,
+        allowNull: false
+    },
+    guild_id: {
+        type: Sequelize.TEXT,
+        allowNull: false
     },
     message: {
         type: Sequelize.TEXT,
         allowNull: false
     },
     remind_time: {
-        type: Sequelize.TEXT,
-        allowNull: false
-    },
-    user: {
-        type: Sequelize.TEXT,
-        allowNull: false
-    },
-    guild_id: {
         type: Sequelize.TEXT,
         allowNull: false
     }
