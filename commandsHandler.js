@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { REST } = require('@discordjs/rest');
 const { Routes, Client, Message } = require('discord.js');
-const { error } = require('node:console');
+//const utils = require(`./utilities/utilityFunctions`);
 require('dotenv/config');
 
 function getFiles(dir) {

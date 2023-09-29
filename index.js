@@ -1,7 +1,8 @@
-require('dotenv').config();
-const fs = require('node:fs');
-const { Client, Events, IntentsBitField, SlashCommandBuilder, Message, messageLink, Collection } = require('discord.js');
+const fs = require(`node:fs`);
+const { Client, Events, IntentsBitField, SlashCommandBuilder, Message, Collection } = require(`discord.js`);
 const Reminder = require('./models/reminder');
+require('dotenv').config();
+//const utils = require(`./utilities/utilityFunctions`);
 
 const client = new Client({
     intents: [

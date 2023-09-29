@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder } = require(`discord.js`);
 const Reminder = require(`../models/reminder`);
 const { addMinutes, addHours, addDays } = require('date-fns');
 
@@ -16,11 +16,16 @@ module.exports = {
             .setName('reminder')
             .setDescription(`what is the reminder?`)
             .setRequired(true))
+    .addStringOption( option =>
+        option
+            .setName('date')
+            .setDescription('X minutes/hours/days')
+            .setRequired(false))
     .addIntegerOption( option =>
         option
             .setName('minutes')
             .setDescription(`how many minutes from now?`)
-            .setRequired(true))
+            .setRequired(false))
     .addIntegerOption( option =>
         option
             .setName('hours')
@@ -36,6 +41,14 @@ module.exports = {
     async execute(interaction) {
         const user = interaction.options.getUser('user');
         const reminder = interaction.options.getString('reminder');
+
+        if(interaction.options.getString('date') != null) {
+            //PARSE STRING INPUT
+
+            interaction.reply(`User inputted string, testing db`);
+            return;
+        }
+
         const minutes = interaction.options.getInteger('minutes');
         const hours = interaction.options.getInteger('hours');
         const days = interaction.options.getInteger('days');
@@ -44,8 +57,6 @@ module.exports = {
 
         const userId = user.id;
         const guildId = interaction.guild.id;
-
-        const primaryKey = user.id + '_' + String(Date.now());
         const message = reminder;
         const dateToRemind = String
             (addMinutes(
@@ -58,18 +69,17 @@ module.exports = {
 
         try {
             const reminder = await Reminder.create({
-                remind_id : primaryKey,
                 message: message,
                 remind_time: dateToRemind,
                 user_id : userId,
                 guild_id : guildId
             });
-
-            console.log(reminder);
         } catch (error) {
             console.log(error);
         }
 
-        interaction.reply("testing interaction!!!");
+        interaction.reply(
+            `Setting reminder for ${user} about ***${message}*** on ***${dateToRemind}***`
+        );
     },
 }
