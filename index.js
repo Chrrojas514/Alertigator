@@ -1,8 +1,8 @@
-const fs = require(`node:fs`);
-const { Client, Events, IntentsBitField, SlashCommandBuilder, Message, Collection } = require(`discord.js`);
+// const fs = require(`node:fs`);
+const { Client, Events, IntentsBitField, Collection } = require(`discord.js`);
 const Reminder = require('./models/reminder');
 require('dotenv').config();
-//const utils = require(`./utilities/utilityFunctions`);
+const utils = require(`./utilities/utilityFunctions`);
 
 const client = new Client({
     intents: [
@@ -35,38 +35,18 @@ client.on(Events.InteractionCreate, interaction => {
         console.log(error);
     }
 
-    //logs information about the interaction, printed to terminal
-    console.log(interaction);
+    // information about the interaction
+    //console.log(interaction);
 });
 
 client.login(process.env.TOKEN);
 
 
 // SHOULD CONSIDER CREATING UTILITY FOLDER / FUNCTION FILE -------------------------------------------------
-function getFiles(dir) {
-    const files = fs.readdirSync(dir, {
-        withFileTypes: true
-    });
-    let commandFiles = [];
-
-    for (const file of files) {
-        if (file.isDirectory()) {
-            commandFiles = [
-                ...commandFiles,
-                ...getFiles(`${dir}/${file.name}`)
-            ]
-        } else if (file.name.endsWith('.js')) {
-            commandFiles.push(`${dir}/${file.name}`);
-        }
-    }
-
-    return commandFiles;
-};
-
 function getCommands(dir) {
     //Discord collection - like a hashmap
     let commands = new Collection();
-    const commandFiles = getFiles(dir);
+    const commandFiles = utils.getFiles(dir);
 
     for (const file of commandFiles) {
         const command = require(file);

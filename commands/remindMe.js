@@ -1,6 +1,6 @@
-const { SlashCommandBuilder } = require(`discord.js`);
-const Reminder = require(`../models/reminder`);
 const { addMinutes, addHours, addDays } = require('date-fns');
+const { SlashCommandBuilder, EmbedBuilder } = require(`discord.js`);
+const Reminder = require(`../models/reminder`);
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -39,6 +39,8 @@ module.exports = {
 
 
     async execute(interaction) {
+        const { client } = interaction;
+        const channel = client.channels.fetch('1147987485469724733');
         const user = interaction.options.getUser('user');
         const reminder = interaction.options.getString('reminder');
 
@@ -52,8 +54,6 @@ module.exports = {
         const minutes = interaction.options.getInteger('minutes');
         const hours = interaction.options.getInteger('hours');
         const days = interaction.options.getInteger('days');
-        
-        //console.log( { user, reminder, minutes, hours, days });
 
         const userId = user.id;
         const guildId = interaction.guild.id;
@@ -78,8 +78,10 @@ module.exports = {
             console.log(error);
         }
 
-        interaction.reply(
-            `Setting reminder for ${user} about ***${message}*** on ***${dateToRemind}***`
-        );
+        const reminderEmbed = new EmbedBuilder()
+            .setColor(0xdeffe7)
+            .setDescription(`${message} on ${dateToRemind}`);
+
+        await interaction.channel.send({embeds: [reminderEmbed]});
     },
 }

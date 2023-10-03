@@ -2,6 +2,7 @@ const fs = require(`node:fs`);
 const path = require(`node:path`);
 const { REST } = require('@discordjs/rest');
 const { Routes, Client, Message, Collection } = require(`discord.js`);
+const schedule = require(`node-schedule`);
 
 function getFiles(dir) {
     const files = fs.readdirSync(dir, {
@@ -24,16 +25,24 @@ function getFiles(dir) {
     return commandFiles;
 }
 
+// DOESNT SEEM TO WORK IN INDEX.JS
 function getCommands(dir) {
     //Discord collection - like a hashmap
     let commands = new Collection();
     const commandFiles = getFiles(dir);
     for (const file of commandFiles) {
+        console.log(file);
         const command = require(file);
         //Add command to discord collection
         commands.set(command.data.toJSON().name, command)
     }
     return commands;
+}
+
+function scheduleReminderLookUp(whenToRemind, reminderModel) {
+    const triggerReminder = schedule.scheduleJob(dateToRemind, function(){
+        client.on()
+    });
 }
 
 module.exports = {
