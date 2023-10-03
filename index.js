@@ -1,26 +1,21 @@
-// const fs = require(`node:fs`);
-const { Client, Events, IntentsBitField, Collection } = require(`discord.js`);
-const Reminder = require('./models/reminder');
-require('dotenv').config();
-const utils = require(`./utilities/utilityFunctions`);
+const { Events, Collection } = require(`discord.js`);
 
-const client = new Client({
-    intents: [
-        IntentsBitField.Flags.Guilds,
-        IntentsBitField.Flags.GuildMembers,
-        IntentsBitField.Flags.GuildMessages,
-        IntentsBitField.Flags.MessageContent,
-    ]
-});
+const client = require(`./utilities/discordClientConfig`);
+const Reminder = require('./models/reminder');
+const utils = require(`./utilities/utilityFunctions`);
+const checkForReminders = require('./db/triggers');
+require('dotenv').config();
+
 
 client.commands = getCommands(`./commands`);
 
 client.once('ready', (c) => {
     //load up the db
     Reminder.sync();
-
     console.log(`${c.user.tag} is online.`);
 });
+
+setInterval(checkForReminders, 60000);
 
 client.on(Events.InteractionCreate, interaction => {
     // If its not a chat command input
@@ -34,7 +29,6 @@ client.on(Events.InteractionCreate, interaction => {
     } catch (error) {
         console.log(error);
     }
-
     // information about the interaction
     //console.log(interaction);
 });

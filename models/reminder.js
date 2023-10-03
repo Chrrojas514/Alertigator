@@ -12,7 +12,7 @@ const Reminder = sequelize.define('reminder', {
         allowNull: false
     },
     remind_time: {
-        type: Sequelize.TEXT,
+        type: Sequelize.DATE,
         allowNull: false
     },
     user_id: {

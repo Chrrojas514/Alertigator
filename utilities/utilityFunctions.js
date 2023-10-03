@@ -1,7 +1,5 @@
 const fs = require(`node:fs`);
-const path = require(`node:path`);
-const { REST } = require('@discordjs/rest');
-const { Routes, Client, Message, Collection } = require(`discord.js`);
+const { Collection } = require(`discord.js`);
 const schedule = require(`node-schedule`);
 
 function getFiles(dir) {

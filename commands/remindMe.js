@@ -45,7 +45,7 @@ module.exports = {
         const reminder = interaction.options.getString('reminder');
 
         if(interaction.options.getString('date') != null) {
-            //PARSE STRING INPUT
+            //PARSE STRING INPUT, STILL NOT DONE YET
 
             interaction.reply(`User inputted string, testing db`);
             return;
@@ -78,6 +78,7 @@ module.exports = {
             console.log(error);
         }
 
+        //CAN MOVE THIS TO ITS OWN CLASS TO BE USED FOR OTHER COMMANDS?
         const reminderEmbed = new EmbedBuilder()
             .setColor(0xdeffe7)
             .setDescription(`${message} on ${dateToRemind}`);
