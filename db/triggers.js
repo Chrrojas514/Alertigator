@@ -1,6 +1,6 @@
 const TextChannel = require(`discord.js`);
 const client = require(`../utilities/discordClientConfig`);
-const Reminder = require('../models/reminder');
+const Reminder = require(`../models/reminder`);
 const { Op } = require("sequelize");
 
 const checkForReminders = async () => {
@@ -10,7 +10,7 @@ const checkForReminders = async () => {
                 [Op.lte]: Date.now()
             }
         }
-    }).then(console.log('stuff in db')).catch('empty');
+    });
 
 
     for (existingReminder of reminders) {
