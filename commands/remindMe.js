@@ -1,6 +1,7 @@
 const { addMinutes, addHours, addDays } = require('date-fns');
 
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
+const buildReminderEmbed = require('../utilities/buildReminderEmbed');
 const Reminder = require('../models/reminder');
 
 module.exports = {
@@ -9,11 +10,11 @@ module.exports = {
     .setDescription('Set a reminder for yourself or others!')
     .addUserOption((option) => option
       .setName('user')
-      .setDescription('person to remind')
+      .setDescription('Person to remind')
       .setRequired(true))
     .addStringOption((option) => option
       .setName('reminder')
-      .setDescription('what is the reminder?')
+      .setDescription('What is the reminder?')
       .setRequired(true))
     .addStringOption((option) => option
       .setName('date')
@@ -21,15 +22,15 @@ module.exports = {
       .setRequired(false))
     .addIntegerOption((option) => option
       .setName('minutes')
-      .setDescription('how many minutes from now?')
+      .setDescription('How many minutes from now?')
       .setRequired(false))
     .addIntegerOption((option) => option
       .setName('hours')
-      .setDescription('how many hours from now?')
+      .setDescription('How many hours from now?')
       .setRequired(false))
     .addIntegerOption((option) => option
       .setName('days')
-      .setDescription('how many days from now?')
+      .setDescription('How many days from now?')
       .setRequired(false)),
 
   async execute(interaction) {
@@ -59,21 +60,23 @@ module.exports = {
     ));
 
     try {
-      await Reminder.create({
+      const reminderObj = await Reminder.create({
         message,
         remind_time: dateToRemind,
         user_id: userId,
         guild_id: guildId,
       });
+
+      const builtReminderEmbed = buildReminderEmbed.reminderEmbedBuilder(reminderObj);
+      await interaction.channel.send({ embeds: [builtReminderEmbed] });
     } catch (error) {
       console.log(error);
+      await interaction.reply('Something went wrong!');
     }
 
     // CAN MOVE THIS TO ITS OWN CLASS TO BE USED FOR OTHER COMMANDS?
-    const reminderEmbed = new EmbedBuilder()
-      .setColor(0xdeffe7)
-      .setDescription(`${message} on ${dateToRemind}`);
+    // const reminderEmbed = buildReminderEmbed(reminderObj);
 
-    await interaction.channel.send({ embeds: [reminderEmbed] });
+    // await interaction.channel.send({ embeds: [reminderEmbed] });
   },
 };
