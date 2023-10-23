@@ -35,12 +35,6 @@ function getCommands(dir) {
   return commands;
 }
 
-// function scheduleReminderLookUp(whenToRemind, reminderModel) {
-//   const triggerReminder = schedule.scheduleJob(dateToRemind, () => {
-//     client.on();
-//   });
-// }
-
 module.exports = {
   getFiles,
   getCommands,

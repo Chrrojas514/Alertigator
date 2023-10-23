@@ -1,13 +1,14 @@
 const { EmbedBuilder } = require('discord.js');
 
+// HAVENT TESTED THESE YET
 const reminderEmbedBuilder = (reminderObject) => {
-  const reminderEmbed = new EmbedBuilder()
+  new EmbedBuilder()
     .setColor(0xdeffe7)
     .setDescription(`${reminderObject.message} on ${reminderObject.dateToRemind}`);
 };
 
 const deliveryEmbedBuilder = (reminderObject) => {
-  const deliveryEmbed = new EmbedBuilder()
+  new EmbedBuilder()
     .setColor(0xdeffe7)
     .setDescription(`Hey, ${reminderObject.message}!`);
 };
