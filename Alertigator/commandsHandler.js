@@ -1,6 +1,10 @@
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord.js');
 
+// RUN THIS BEFORE TESTING ANY CHANGES TO COMMANDS SUBDIRECTORY
+// sends the commands to an endpoint in Discord's API, updating the
+// bot's commands
+
 const utils = require('./utilities/utilityFunctions');
 require('dotenv/config');
 
