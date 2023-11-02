@@ -1,7 +1,7 @@
 const { addMinutes, addHours, addDays } = require('date-fns');
 
 const { SlashCommandBuilder } = require('discord.js');
-const buildReminderEmbed = require('../utilities/buildReminderEmbed');
+const { EmbedBuilder } = require('discord.js');
 const Reminder = require('../models/reminder');
 
 module.exports = {
@@ -60,23 +60,23 @@ module.exports = {
     ));
 
     try {
-      const reminderObj = await Reminder.create({
+      await Reminder.create({
         message,
         remind_time: dateToRemind,
         user_id: userId,
         guild_id: guildId,
       });
 
-      const builtReminderEmbed = buildReminderEmbed.reminderEmbedBuilder(reminderObj);
-      await interaction.channel.send({ embeds: [builtReminderEmbed] });
+      await interaction.channel.send({ embeds: [reminderEmbed] });
     } catch (error) {
       console.log(error);
-      await interaction.reply('Something went wrong!');
     }
 
     // CAN MOVE THIS TO ITS OWN CLASS TO BE USED FOR OTHER COMMANDS?
-    // const reminderEmbed = buildReminderEmbed(reminderObj);
+    const reminderEmbed = new EmbedBuilder()
+      .setColor(0xdeffe7)
+      .setDescription(`${message} on ${dateToRemind}`);
 
-    // await interaction.channel.send({ embeds: [reminderEmbed] });
+    await interaction.channel.send({ embeds: [reminderEmbed] });
   },
 };
