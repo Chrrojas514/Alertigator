@@ -66,8 +66,6 @@ module.exports = {
         user_id: userId,
         guild_id: guildId,
       });
-
-      await interaction.channel.send({ embeds: [reminderEmbed] });
     } catch (error) {
       console.log(error);
     }
