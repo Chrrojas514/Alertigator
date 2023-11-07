@@ -79,10 +79,10 @@ module.exports = {
     // CAN MOVE THIS TO ITS OWN CLASS TO BE USED FOR OTHER COMMANDS?
     // The embed that the bot responds with as confirmation that its received the user's
     // request.
-    // BUG WITH DATETOREMIND, SOMETHING IS GOING WRONG WITH THE CONVERSION
+
     const reminderEmbed = new EmbedBuilder()
       .setColor(0xdeffe7)
-      .setDescription(`${user} ${message} <t:${dateToRemind}:R>`);
+      .setDescription(`${user} ${message} <t:${Math.floor(dateToRemind / 1000)}:R>`);
 
     console.log(dateToRemind);
 
