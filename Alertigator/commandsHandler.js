@@ -1,10 +1,5 @@
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord.js');
-
-// RUN THIS BEFORE TESTING ANY CHANGES TO COMMANDS SUBDIRECTORY
-// sends the commands to an endpoint in Discord's API, updating the
-// bot's commands
-
 const utils = require('./utilities/utilityFunctions');
 require('dotenv/config');
 
@@ -12,7 +7,7 @@ const commands = [];
 const commandFiles = utils.getFiles('./commands');
 
 for (const file of commandFiles) {
-  // eslint-disable-next-line global-require
+  // eslint-disable-line global-require
   const command = require(file);
   commands.push(command.data.toJSON());
 }
@@ -21,12 +16,15 @@ console.log(commands);
 
 const rest = new REST().setToken(process.env.TOKEN);
 
+const guildId = '1147984780370116638'; //guild ID
+const applicationId = '1147989226852458556'; //application ID
+
 (async () => {
   console.log(`Refreshing ${commands.length} slash commands...`);
 
   try {
     const data = await rest.put(
-      Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
+      Routes.applicationGuildCommands(applicationId, guildId), // Update the line with the correct IDs
       { body: commands },
     );
 
