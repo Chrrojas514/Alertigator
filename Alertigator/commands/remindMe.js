@@ -85,6 +85,6 @@ module.exports = {
 
     console.log(dateToRemind);
 
-    interaction.channel.send({ embeds: [reminderEmbed] });
+    interaction.reply({ embeds: [reminderEmbed] }); // Send the response to the interaction
   },
 };
