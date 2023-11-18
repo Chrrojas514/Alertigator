@@ -17,7 +17,11 @@ module.exports = {
         .setColor(0xdeffe7)
         .setTitle("Help Commands")
         .setDescription("Command Guide:")
-        .addFields({name: "/remind", value: "testing"})
+        .addFields({name: "/remind", value: "Brings up remind parameters"})
+        .addFields({name: "user", value: "Add the person you want to remind"})
+        .addFields({name: "reminder", value: "Write your reminder"})
+        .addFields({name: "date", value: "Use the format in the description to be reminded on that day and time"})
+        .addFields({name: "days/hours/minutes", value: "Put down a value for days/hours/minutes to be reminded days/hours/minutes later"})
         .setFooter({text: "Help Commands"})
         .setTimestamp()
 
