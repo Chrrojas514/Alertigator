@@ -19,7 +19,7 @@ module.exports = {
             .setRequired(true))
         .addStringOption((option) => option
             .setName('date')
-            .setDescription('Reminder Date & Time Format: MM/DD/YYYY HH:MM')
+            .setDescription('Reminder Date & Time Format: MM/DD/YYYY HH:MM (24 Hours)')
             .setRequired(false))
         .addIntegerOption((option) => option
             .setName('days')
