@@ -12,6 +12,7 @@ Features:
 - Hidden Reminder: Users can use a special indicator to hide their reminder command 
 - View Reminders: Users can check their reminder list 
 - Reminder Editing: Allow users to modify the date, time, or content of existing reminders. Or if they want, to delete the reminder
-- Recurring Reminders: Users can set a repeating reminder 
+- Recurring Reminders: Users can set a repeating reminder
+  
 /help 
 - Provides a list of commands and descriptions on how to use the commands
