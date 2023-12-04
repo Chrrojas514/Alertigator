@@ -13,9 +13,10 @@ module.exports = {
         .addFields({name: "Page 1", value: "Help Page"})
         .addFields({name: "Page 2", value: "Reminder"})
         .addFields({name: "Page 3", value: "Countdown"})
-        .addFields({name: "Page 4", value: "Daily News"})
-        .addFields({name: "Page 5", value: "Currency Convert"})
-        .addFields({name: "Page 6", value: "Currency Convert List"})
+        .addFields({name: "Page 4", value: "Reminder"})
+        .addFields({name: "Page 5", value: "Daily News"})
+        .addFields({name: "Page 6", value: "Currency Convert"})
+        .addFields({name: "Page 7", value: "Currency Convert List"})
 
         const embed2 = new EmbedBuilder()
         .setColor(0xdeffe7)
@@ -41,6 +42,15 @@ module.exports = {
 
         const embed4 = new EmbedBuilder()
         .setColor(0xdeffe7)
+        .setTitle("Counting Command")
+        .setDescription("Command Features:")
+        .addFields({name: "/count", value: "Count until STOP is pressed"})
+        .addFields({name: "seconds", value: "Number of seconds to count up to starting from 0"})
+        .setFooter({text: "Counting Command"})
+        .setTimestamp()
+
+        const embed5 = new EmbedBuilder()
+        .setColor(0xdeffe7)
         .setTitle("Daily News Command")
         .setDescription("Command Features:")
         .addFields({name: "/dailynews", value: "Brings up dailynews parameters"})
@@ -48,7 +58,7 @@ module.exports = {
         .setFooter({text: "Daily News Command"})
         .setTimestamp()
 
-        const embed5 = new EmbedBuilder()
+        const embed6 = new EmbedBuilder()
         .setColor(0xdeffe7)
         .setTitle("Currency Convert Command")
         .setDescription("Command Features:")
@@ -59,7 +69,7 @@ module.exports = {
         .setFooter({text: "Currency Convert Command"})
         .setTimestamp()
 
-        const embed6 = new EmbedBuilder()
+        const embed7 = new EmbedBuilder()
         .setColor(0xdeffe7)
         .setTitle("Currency Convert List Command")
         .setDescription("Command Features:")
@@ -97,6 +107,11 @@ module.exports = {
             new ButtonBuilder()
             .setCustomId(`page6`)
             .setLabel(`Page 6`)
+            .setStyle(ButtonStyle.Success),
+
+            new ButtonBuilder()
+            .setCustomId(`page7`)
+            .setLabel(`Page 7`)
             .setStyle(ButtonStyle.Success),
         )
 
@@ -145,6 +160,15 @@ module.exports = {
                 }
                 await i.update({ embeds: [embed6], components: [button]})
             }
+
+            if (i.customId === 'page7') {
+                if (i.user.id !== interaction.user.id) {
+                    return await i.reply({ content: `Only ${interaction.user.tag} can use these buttons!`, ephemeral: true})
+                }
+                await i.update({ embeds: [embed7], components: [button]})
+            }
         })
     }
+
+    
 }
