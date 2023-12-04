@@ -77,45 +77,43 @@ module.exports = {
         .setFooter({text: "Currency List Command"})
         .setTimestamp()
 
-        const button = new ActionRowBuilder()
-        .addComponents(
-            new ButtonBuilder()
-            .setCustomId(`page1`)
-            .setLabel(`Page 1`)
-            .setStyle(ButtonStyle.Success),
+        const firstRow = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId(`page1`)
+                    .setLabel(`Page 1`)
+                    .setStyle(ButtonStyle.Success),
+                new ButtonBuilder()
+                    .setCustomId(`page2`)
+                    .setLabel(`Page 2`)
+                    .setStyle(ButtonStyle.Success),
+                new ButtonBuilder()
+                    .setCustomId(`page3`)
+                    .setLabel(`Page 3`)
+                    .setStyle(ButtonStyle.Success),
+                new ButtonBuilder()
+                    .setCustomId(`page4`)
+                    .setLabel(`Page 4`)
+                    .setStyle(ButtonStyle.Success),
+                new ButtonBuilder()
+                    .setCustomId(`page5`)
+                    .setLabel(`Page 5`)
+                    .setStyle(ButtonStyle.Success),
+            );
 
-            new ButtonBuilder()
-            .setCustomId(`page2`)
-            .setLabel(`Page 2`)
-            .setStyle(ButtonStyle.Success),
+        const secondRow = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId(`page6`)
+                    .setLabel(`Page 6`)
+                    .setStyle(ButtonStyle.Success),
+                new ButtonBuilder()
+                    .setCustomId(`page7`)
+                    .setLabel(`Page 7`)
+                    .setStyle(ButtonStyle.Success),
+            );
 
-            new ButtonBuilder()
-            .setCustomId(`page3`)
-            .setLabel(`Page 3`)
-            .setStyle(ButtonStyle.Success),
-
-            new ButtonBuilder()
-            .setCustomId(`page4`)
-            .setLabel(`Page 4`)
-            .setStyle(ButtonStyle.Success),
-
-            new ButtonBuilder()
-            .setCustomId(`page5`)
-            .setLabel(`Page 5`)
-            .setStyle(ButtonStyle.Success),
-
-            new ButtonBuilder()
-            .setCustomId(`page6`)
-            .setLabel(`Page 6`)
-            .setStyle(ButtonStyle.Success),
-
-            new ButtonBuilder()
-            .setCustomId(`page7`)
-            .setLabel(`Page 7`)
-            .setStyle(ButtonStyle.Success),
-        )
-
-        const message = await interaction.reply({ embeds: [embed],components: [button] });
+        const message = await interaction.reply({ embeds: [embed],components: [firstRow, secondRow] });
         const collector = await message.createMessageComponentCollector();
 
         collector.on('collect', async i => {
@@ -123,52 +121,50 @@ module.exports = {
                 if (i.user.id !== interaction.user.id) {
                     return await i.reply({ content: `Only ${interaction.user.tag} can use these buttons!`, ephemeral: true})
                 }
-                await i.update({ embeds: [embed], components: [button]})
+                await i.update({ embeds: [embed], components: [firstRow, secondRow] })
             }
 
             if (i.customId === 'page2') {
                 if (i.user.id !== interaction.user.id) {
                     return await i.reply({ content: `Only ${interaction.user.tag} can use these buttons!`, ephemeral: true})
                 }
-                await i.update({ embeds: [embed2], components: [button]})
+                await i.update({ embeds: [embed2], components: [firstRow, secondRow] })
             }
 
             if (i.customId === 'page3') {
                 if (i.user.id !== interaction.user.id) {
                     return await i.reply({ content: `Only ${interaction.user.tag} can use these buttons!`, ephemeral: true})
                 }
-                await i.update({ embeds: [embed3], components: [button]})
+                await i.update({ embeds: [embed3], components: [firstRow, secondRow] })
             }
 
             if (i.customId === 'page4') {
                 if (i.user.id !== interaction.user.id) {
                     return await i.reply({ content: `Only ${interaction.user.tag} can use these buttons!`, ephemeral: true})
                 }
-                await i.update({ embeds: [embed4], components: [button]})
+                await i.update({ embeds: [embed4], components: [firstRow, secondRow] })
             }
 
             if (i.customId === 'page5') {
                 if (i.user.id !== interaction.user.id) {
                     return await i.reply({ content: `Only ${interaction.user.tag} can use these buttons!`, ephemeral: true})
                 }
-                await i.update({ embeds: [embed5], components: [button]})
+                await i.update({ embeds: [embed5], components: [firstRow, secondRow] })
             }
 
             if (i.customId === 'page6') {
                 if (i.user.id !== interaction.user.id) {
                     return await i.reply({ content: `Only ${interaction.user.tag} can use these buttons!`, ephemeral: true})
                 }
-                await i.update({ embeds: [embed6], components: [button]})
+                await i.update({ embeds: [embed6], components: [firstRow, secondRow] })
             }
 
             if (i.customId === 'page7') {
                 if (i.user.id !== interaction.user.id) {
                     return await i.reply({ content: `Only ${interaction.user.tag} can use these buttons!`, ephemeral: true})
                 }
-                await i.update({ embeds: [embed7], components: [button]})
+                await i.update({ embeds: [embed7], components: [firstRow, secondRow] })
             }
         })
     }
-
-    
 }
