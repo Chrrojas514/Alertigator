@@ -1,5 +1,4 @@
 const { addMinutes, addHours, addDays } = require('date-fns');
-
 const { SlashCommandBuilder } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
 const Reminder = require('../models/reminder');
@@ -70,7 +69,7 @@ module.exports = {
 
                     const reminderEmbed = new EmbedBuilder()
                         .setColor(0xdeffe7)
-                        .setDescription(`Reminder set for ${reminderDate.format('LLL')} for ${user} about [${message}]`);
+                        .setDescription(`Reminder set for ${reminderDate.format('LLL')} for ${user} about \`${message}\``);
 
                     console.log(reminderDate);
 
@@ -119,7 +118,7 @@ module.exports = {
 
             const reminderEmbed = new EmbedBuilder()
                 .setColor(0xdeffe7)
-                .setDescription(`${user} will be reminded <t:${Math.floor(dateToRemind / 1000)}:R> about [${message}]`);
+                .setDescription(`${user} will be reminded <t:${Math.floor(dateToRemind / 1000)}:R> about \`${message}\``);
 
             console.log(dateToRemind);
 
@@ -150,7 +149,7 @@ module.exports = {
 
                     const reminderEmbed = new EmbedBuilder()
                         .setColor(0xdeffe7)
-                        .setDescription(`Reminder set for ${reminderDate.format('LLL')} for ${user} about [${message}]`);
+                        .setDescription(`Reminder set for ${reminderDate.format('LLL')} for ${user} about \`${message}\``);
 
                     console.log(reminderDate);
 
@@ -199,7 +198,7 @@ module.exports = {
 
             const reminderEmbed = new EmbedBuilder()
                 .setColor(0xdeffe7)
-                .setDescription(`${user} will be reminded <t:${Math.floor(dateToRemind / 1000)}:R> about [${message}]`);
+                .setDescription(`${user} will be reminded <t:${Math.floor(dateToRemind / 1000)}:R> about \`${message}\``);
 
             console.log(dateToRemind);
 
@@ -208,3 +207,5 @@ module.exports = {
                 ephemeral: false
             }); // Send the response to the interaction
         }
+    },
+};
