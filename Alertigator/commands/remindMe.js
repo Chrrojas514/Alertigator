@@ -1,90 +1,211 @@
 const { addMinutes, addHours, addDays } = require('date-fns');
-
 const { SlashCommandBuilder } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
 const Reminder = require('../models/reminder');
+const moment = require('moment');
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName('remind')
-    .setDescription('Set a reminder for yourself or others!')
-    .addUserOption((option) => option
-      .setName('user')
-      .setDescription('Person to remind')
-      .setRequired(true))
-    .addStringOption((option) => option
-      .setName('reminder')
-      .setDescription('What is the reminder?')
-      .setRequired(true))
-    .addStringOption((option) => option
-      .setName('date')
-      .setDescription('X minutes/hours/days')
-      .setRequired(false))
-    .addIntegerOption((option) => option
-      .setName('minutes')
-      .setDescription('How many minutes from now?')
-      .setRequired(false))
-    .addIntegerOption((option) => option
-      .setName('hours')
-      .setDescription('How many hours from now?')
-      .setRequired(false))
-    .addIntegerOption((option) => option
-      .setName('days')
-      .setDescription('How many days from now?')
-      .setRequired(false)),
+    data: new SlashCommandBuilder()
+        .setName('remind')
+        .setDescription('Set a reminder for yourself or others!')
+        .addUserOption((option) => option
+            .setName('user')
+            .setDescription('Person to remind')
+            .setRequired(true))
+        .addStringOption((option) => option
+            .setName('reminder')
+            .setDescription('What is the reminder?')
+            .setRequired(true))
+        .addStringOption((option) => option
+            .setName('hidden')
+            .setDescription('Hide the command? Yes to hide it')
+            .setRequired(false))
+        .addStringOption((option) => option
+            .setName('date')
+            .setDescription('Reminder Date & Time Format: MM/DD/YYYY 24:00 (24 Hours)')
+            .setRequired(false))
+        .addIntegerOption((option) => option
+            .setName('days')
+            .setDescription('How many days from now?')
+            .setRequired(false))
+        .addIntegerOption((option) => option
+            .setName('hours')
+            .setDescription('How many hours from now?')
+            .setRequired(false))
+        .addIntegerOption((option) => option
+            .setName('minutes')
+            .setDescription('How many minutes from now?')
+            .setRequired(false)),
 
-  // this runs when someone uses the slash command
-  async execute(interaction) {
-    const user = interaction.options.getUser('user');
-    // the reminder the user typed in for themselves
-    const reminder = interaction.options.getString('reminder');
+    // this runs when someone uses the slash command
+    async execute(interaction) {
+        const user = interaction.options.getUser('user');
+        // the reminder the user typed in for themselves
+        const reminder = interaction.options.getString('reminder');
 
-    // if user put in date (ie 'in five minutes', 'tomrrow', etc), parse and return from
-    // execute here
-    if (interaction.options.getString('date') != null) {
-      // PARSE STRING INPUT, STILL NOT DONE YET
+        const hidden = interaction.options.getString('hidden');
 
-      interaction.reply('User inputted string, testing db');
-      return;
-    }
+        const message = reminder;
 
-    // User did not inpute date, calculate time until reminder in dateToRemind
-    const minutes = interaction.options.getInteger('minutes');
-    const hours = interaction.options.getInteger('hours');
-    const days = interaction.options.getInteger('days');
+        if (hidden === "Y" || hidden === "y" || hidden === "YES" || hidden === "YEs" || hidden === "YeS" || hidden === "yES" || hidden === "Yes" || hidden === "yEs" || hidden === "yeS" || hidden === "yes") {
+            if (interaction.options.getString('date') != null) {
 
-    const userId = user.id;
-    const guildId = interaction.guild.id;
-    const message = reminder;
-    const dateToRemind = addMinutes(
-      addHours(
-        addDays(Date.now(), Number(days)),
-        Number(hours),
-      ),
-      Number(minutes),
-    ).getTime();
+                const date = interaction.options.getString('date');
 
-    // Create the reminder in the database
-    try {
-      await Reminder.create({
-        message,
-        remind_time: dateToRemind,
-        user_id: userId,
-        guild_id: guildId,
-      });
-    } catch (error) {
-      console.log(error);
-    }
+                const reminderDate = moment(date, 'MM/DD/YYYY HH:mm', true);
 
-    // CAN MOVE THIS TO ITS OWN CLASS TO BE USED FOR OTHER COMMANDS?
-    // The embed that the bot responds with as confirmation that its received the user's
-    // request.
-    const reminderEmbed = new EmbedBuilder()
-      .setColor(0xdeffe7)
-      .setDescription(`${user} ${message} <t:${Math.floor(dateToRemind / 1000)}:R>`);
+                // Check if the date is valid
+                if (reminderDate.isValid() && reminderDate.isAfter(moment())) {
+                    try {
+                        await Reminder.create({
+                            message,
+                            remind_time: reminderDate,
+                            user_id: user.id,
+                            guild_id: interaction.guild.id,
+                        });
+                    } catch (error) {
+                        console.log(error);
+                    }
 
-    console.log(dateToRemind);
+                    const reminderEmbed = new EmbedBuilder()
+                        .setColor(0xdeffe7)
+                        .setDescription(`Reminder set for ${reminderDate.format('LLL')} for ${user} about \`${message}\``);
 
-    interaction.reply({ embeds: [reminderEmbed] }); // Send the response to the interaction
-  },
+                    console.log(reminderDate);
+
+                    interaction.reply({
+                        embeds: [reminderEmbed],
+                        ephemeral: true
+                    });
+                } else {
+                    interaction.reply({
+                        content: 'Invalid date format. Please use MM/DD/YYYY HH:MM',
+                        ephemeral: true
+                    });
+                }
+                return;
+            }
+
+            // User did not inpute date, calculate time until reminder in dateToRemind
+            const days = interaction.options.getInteger('days');
+            const hours = interaction.options.getInteger('hours');
+            const minutes = interaction.options.getInteger('minutes');
+
+            const userId = user.id;
+            const guildId = interaction.guild.id;
+            const dateToRemind = addMinutes(
+                addHours(
+                    addDays(Date.now(), Number(days)),
+                    Number(hours),
+                ),
+                Number(minutes),
+            ).getTime();
+
+            // Create the reminder in the database
+            try {
+                await Reminder.create({
+                    message,
+                    remind_time: dateToRemind,
+                    user_id: userId,
+                    guild_id: guildId,
+                });
+            } catch (error) {
+                console.log(error);
+            }
+
+            // The embed that the bot responds with as confirmation that its received the user's
+            // request.
+
+            const reminderEmbed = new EmbedBuilder()
+                .setColor(0xdeffe7)
+                .setDescription(`${user} will be reminded <t:${Math.floor(dateToRemind / 1000)}:R> about \`${message}\``);
+
+            console.log(dateToRemind);
+
+            interaction.reply({
+                embeds: [reminderEmbed],
+                ephemeral: true
+            }); // Send the response to the interaction
+        } else {
+            // execute here
+            if (interaction.options.getString('date') != null) {
+
+                const date = interaction.options.getString('date');
+
+                const reminderDate = moment(date, 'MM/DD/YYYY HH:mm', true);
+
+                // Check if the date is valid
+                if (reminderDate.isValid() && reminderDate.isAfter(moment())) {
+                    try {
+                        await Reminder.create({
+                            message,
+                            remind_time: reminderDate,
+                            user_id: user.id,
+                            guild_id: interaction.guild.id,
+                        });
+                    } catch (error) {
+                        console.log(error);
+                    }
+
+                    const reminderEmbed = new EmbedBuilder()
+                        .setColor(0xdeffe7)
+                        .setDescription(`Reminder set for ${reminderDate.format('LLL')} for ${user} about \`${message}\``);
+
+                    console.log(reminderDate);
+
+                    interaction.reply({
+                        embeds: [reminderEmbed],
+                        ephemeral: false
+                    });
+                } else {
+                    interaction.reply({
+                        content: 'Invalid date format. Please use MM/DD/YYYY HH:MM',
+                        ephemeral: false
+                    });
+                }
+                return;
+            }
+
+            // User did not inpute date, calculate time until reminder in dateToRemind
+            const days = interaction.options.getInteger('days');
+            const hours = interaction.options.getInteger('hours');
+            const minutes = interaction.options.getInteger('minutes');
+
+            const userId = user.id;
+            const guildId = interaction.guild.id;
+            const dateToRemind = addMinutes(
+                addHours(
+                    addDays(Date.now(), Number(days)),
+                    Number(hours),
+                ),
+                Number(minutes),
+            ).getTime();
+
+            // Create the reminder in the database
+            try {
+                await Reminder.create({
+                    message,
+                    remind_time: dateToRemind,
+                    user_id: userId,
+                    guild_id: guildId,
+                });
+            } catch (error) {
+                console.log(error);
+            }
+
+            // The embed that the bot responds with as confirmation that its received the user's
+            // request.
+
+            const reminderEmbed = new EmbedBuilder()
+                .setColor(0xdeffe7)
+                .setDescription(`${user} will be reminded <t:${Math.floor(dateToRemind / 1000)}:R> about \`${message}\``);
+
+            console.log(dateToRemind);
+
+            interaction.reply({
+                embeds: [reminderEmbed],
+                ephemeral: false
+            }); // Send the response to the interaction
+        }
+    },
 };
