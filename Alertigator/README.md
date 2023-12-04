@@ -4,6 +4,7 @@ CSCI 499 Capstone Project
 # Discord Remind Bot
 
 Features:
+
 /help 
 - Provides a list of commands and descriptions on how to use the commands
 
