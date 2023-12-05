@@ -13,24 +13,22 @@ module.exports = {
   async execute(interaction) {
     const count = interaction.options.getInteger('count');
 
-    //check if count parameter to see if it exceeds the maximum limit
+    // check if count parameter to see if it exceeds the maximum limit
     if (count > 4) {
-        interaction.reply('The maximum number of articles I can fetch is 4!');
-        return;
+      interaction.reply('The maximum number of articles I can fetch is 4!');
+      return;
     }
 
-    //fetch news articles from NewsAPI and send as a response
+    // fetch news articles from NewsAPI and send as a response
     const apiKey = 'd75977b59ee04968ba54db326262277f';
     const apiUrl = `https://newsapi.org/v2/top-headlines?country=us&pageSize=${count}&apiKey=${apiKey}`;
 
     try {
       const response = await axios.get(apiUrl);
-      const articles = response.data.articles;
+      const { articles } = response.data;
 
       if (articles.length > 0) {
-        const articleText = articles.map((article, index) => {
-          return `${index + 1}. [${article.title}](${article.url})\n${article.description}`;
-        }).join('\n\n');
+        const articleText = articles.map((article, index) => `${index + 1}. [${article.title}](${article.url})\n${article.description}`).join('\n\n');
 
         interaction.reply({
           content: 'Here are the trending news articles:',
@@ -38,7 +36,7 @@ module.exports = {
             {
               title: 'Trending News Articles',
               description: articleText,
-              color: 0x3498db, 
+              color: 0x3498db,
             },
           ],
         });

@@ -5,10 +5,9 @@ module.exports = {
     .setName('countdown')
     .setDescription('Add a number to countdown from')
     .addIntegerOption((option) => option
-        .setName('seconds')
-        .setDescription('Number of seconds to countdown from')
-        .setRequired(true),
-    ),
+      .setName('seconds')
+      .setDescription('Number of seconds to countdown from')
+      .setRequired(true)),
 
   async execute(interaction) {
     const seconds = interaction.options.getInteger('seconds');

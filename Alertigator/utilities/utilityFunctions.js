@@ -1,3 +1,4 @@
+/* eslint-disable import/no-dynamic-require */
 const fs = require('node:fs');
 const { Collection } = require('discord.js');
 // const schedule = require('node-schedule');

@@ -5,20 +5,15 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('convert')
     .setDescription('Convert currency')
-    .addNumberOption(option =>
-      option.setName('amount')
-        .setDescription('Amount to convert')
-        .setRequired(true)
-    )
-    .addStringOption(option =>
-      option.setName('from')
-        .setDescription('Currency to convert from (e.g., USD)')
-        .setRequired(true)
-    )
-    .addStringOption(option =>
-      option.setName('to')
-        .setDescription('Currency to convert to (e.g., EUR)')
-        .setRequired(true) // Make the 'to' parameter required
+    .addNumberOption((option) => option.setName('amount')
+      .setDescription('Amount to convert')
+      .setRequired(true))
+    .addStringOption((option) => option.setName('from')
+      .setDescription('Currency to convert from (e.g., USD)')
+      .setRequired(true))
+    .addStringOption((option) => option.setName('to')
+      .setDescription('Currency to convert to (e.g., EUR)')
+      .setRequired(true), // Make the 'to' parameter required
     ),
   async execute(interaction) {
     const amount = interaction.options.getNumber('amount');

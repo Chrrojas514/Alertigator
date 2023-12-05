@@ -16,14 +16,13 @@ const checkForReminders = async () => {
   for (const existingReminder of reminders) {
     // parse reminder model
     const reminderData = JSON.stringify(existingReminder);
-    
+
     // retrieved reminder
     client.channels.fetch('1147987485469724733').then((channel) => {
       channel.send(`<@${existingReminder.user_id}> Reminder: \`${existingReminder.message}\``);
     });
 
     console.log(`Reminder delivered: ${reminderData}`);
-    
 
     await existingReminder.destroy();
   }

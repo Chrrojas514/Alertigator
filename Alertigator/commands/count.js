@@ -2,17 +2,16 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 module.exports = {
   data: new SlashCommandBuilder()
-      .setName('count')
-      .setDescription('Count up till the user reacts to the stop sign or till it reaches the specified # of seconds.')
-      .addIntegerOption((option) => option
-          .setName('seconds')
-          .setDescription('Seconds to count up to.')
-          .setRequired(false),
-      ),
+    .setName('count')
+    .setDescription('Count up till the user reacts to the stop sign or till it reaches the specified # of seconds.')
+    .addIntegerOption((option) => option
+      .setName('seconds')
+      .setDescription('Seconds to count up to.')
+      .setRequired(false)),
 
   async execute(interaction) {
     const secondsOption = interaction.options.getInteger('seconds');
-    const user = interaction.user;
+    const { user } = interaction;
     let count = 0;
     let stopCounting = false;
 
@@ -61,7 +60,7 @@ module.exports = {
 
     // STOP button click
     const filter = (i) => i.customId === 'stop_button' && i.user.id === interaction.user.id;
-    const collector = initialMessage.createMessageComponentCollector({ filter, time: secondsOption ? secondsOption * 1000 : 86400000});
+    const collector = initialMessage.createMessageComponentCollector({ filter, time: secondsOption ? secondsOption * 1000 : 86400000 });
 
     collector.on('collect', () => {
       stopCounting = true;
