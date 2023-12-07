@@ -1,5 +1,5 @@
 # Alertigator
-CSCI 499 Capstone Project
+CSCI 499 Capstone Project by Chris Rojas, Victor Lo, Raymond Xu 
 
 # Instructions on how to start the bot
 1. Create a discord server if you do not already have one
